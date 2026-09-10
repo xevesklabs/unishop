@@ -26,6 +26,14 @@
   --error: #DC2626;
 }
 
+.dark {
+  --text-primary: #FFFFFF;
+  --text-secondary: #E2E8F0;
+  --text-muted: #94A3B8;
+  
+  --border: rgba(255, 255, 255, 0.1);
+}
+
 /* ── Smooth theme transitions ────────────────────────────────────────────── */
 html { transition: background-color 0.25s ease, color 0.25s ease; }
 
