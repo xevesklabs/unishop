@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet-async';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MapPin, CreditCard, Banknote, Loader2 } from "lucide-react";
@@ -44,13 +45,32 @@ export default function CheckoutPage() {
   const fields = [
     { name: "name",    label: "Full Name",         placeholder: "Ramesh Kumar",         type: "text" },
     { name: "address", label: "Delivery Address",  placeholder: "Flat 3B, Sunshine Apts, MG Road", type: "text" },
-    { name: "city",    label: "City",              placeholder: "New Delhi",             type: "text" },
-    { name: "pin",     label: "PIN Code",          placeholder: "110001",                type: "tel" },
+    { name: "city",    label: "City",              placeholder: "Jagadhri",             type: "text" },
+    { name: "pin",     label: "PIN Code",          placeholder: "135003",                type: "tel" },
     { name: "phone",   label: "Phone Number",      placeholder: "9876543210",            type: "tel" },
   ];
 
   const deliveryFee = total >= 999 ? 0 : 60;
   const grandTotal  = total + deliveryFee;
+
+  if (items.length === 0) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-[#0e0e0e] transition-colors flex flex-col">
+      <Helmet><title>Checkout — Mayank Uniforms</title></Helmet>
+        <Navbar showBack title="Checkout" />
+        <div className="flex-1 flex flex-col items-center justify-center p-4 text-center">
+          <p className="text-gray-500 dark:text-white/40 dark:text-white/50 mb-4">Your cart is empty — add items before checking out</p>
+          <button
+            onClick={() => navigate('/products')}
+            className="px-6 py-3 rounded-xl text-sm font-bold text-white shadow-md active:scale-95 transition-all"
+            style={{ backgroundColor: "var(--accent)" }}
+          >
+            Browse Products
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-[#0e0e0e] transition-colors">
@@ -59,15 +79,15 @@ export default function CheckoutPage() {
       <div className="max-w-lg mx-auto px-4 py-5 space-y-5 page-enter">
 
         {/* Delivery address */}
-        <section className="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm">
-          <h2 className="text-sm font-bold text-gray-800 flex items-center gap-2 mb-4">
+        <section className="bg-white dark:bg-[#1a1a1a] rounded-2xl p-4 border border-gray-100 dark:border-white/10 shadow-sm">
+          <h2 className="text-sm font-bold text-gray-800 dark:text-white/90 flex items-center gap-2 mb-4">
             <MapPin size={15} style={{ color: "var(--accent)" }} />
             Delivery Address
           </h2>
           <div className="space-y-3">
             {fields.map(({ name, label, placeholder, type }) => (
               <div key={name}>
-                <label className="block text-xs font-semibold text-gray-600 mb-1">
+                <label className="block text-xs font-semibold text-gray-600 dark:text-white/60 mb-1">
                   {label}
                 </label>
                 <input
@@ -76,7 +96,7 @@ export default function CheckoutPage() {
                   value={form[name]}
                   onChange={handleChange}
                   placeholder={placeholder}
-                  className="w-full px-3 py-2.5 text-sm rounded-xl border focus:outline-none focus:ring-2 bg-gray-50"
+                  className="w-full px-3 py-2.5 text-sm rounded-xl border focus:outline-none focus:ring-2 bg-gray-50 dark:bg-[#0e0e0e]"
                   style={{
                     borderColor: errors[name] ? "#ef4444" : "#e2e8f0",
                     "--tw-ring-color": "var(--accent)",
@@ -91,8 +111,8 @@ export default function CheckoutPage() {
         </section>
 
         {/* Payment method */}
-        <section className="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm">
-          <h2 className="text-sm font-bold text-gray-800 flex items-center gap-2 mb-4">
+        <section className="bg-white dark:bg-[#1a1a1a] rounded-2xl p-4 border border-gray-100 dark:border-white/10 shadow-sm">
+          <h2 className="text-sm font-bold text-gray-800 dark:text-white/90 flex items-center gap-2 mb-4">
             <CreditCard size={15} style={{ color: "var(--accent)" }} />
             Payment Method
           </h2>
@@ -132,8 +152,8 @@ export default function CheckoutPage() {
                 />
                 <span style={{ color: "var(--accent)" }}>{opt.icon}</span>
                 <div>
-                  <p className="text-sm font-semibold text-gray-800">{opt.title}</p>
-                  <p className="text-xs text-gray-500">{opt.sub}</p>
+                  <p className="text-sm font-semibold text-gray-800 dark:text-white/90">{opt.title}</p>
+                  <p className="text-xs text-gray-500 dark:text-white/40">{opt.sub}</p>
                 </div>
               </label>
             ))}
@@ -141,23 +161,23 @@ export default function CheckoutPage() {
         </section>
 
         {/* Order summary */}
-        <section className="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm">
-          <h2 className="text-sm font-bold text-gray-800 mb-3">Order Summary</h2>
+        <section className="bg-white dark:bg-[#1a1a1a] rounded-2xl p-4 border border-gray-100 dark:border-white/10 shadow-sm">
+          <h2 className="text-sm font-bold text-gray-800 dark:text-white/90 mb-3">Order Summary</h2>
           <div className="space-y-2 text-sm">
             {items.map((item) => (
-              <div key={item.key} className="flex justify-between text-gray-600">
+              <div key={item.key} className="flex justify-between text-gray-600 dark:text-white/60">
                 <span className="truncate max-w-[200px]">
                   {item.name}{" "}
                   <span className="text-gray-400">
                     ({item.size}) ×{item.quantity}
                   </span>
                 </span>
-                <span className="font-medium text-gray-800 flex-shrink-0 ml-2">
+                <span className="font-medium text-gray-800 dark:text-white/90 flex-shrink-0 ml-2">
                   ₹{(item.price * item.quantity).toLocaleString("en-IN")}
                 </span>
               </div>
             ))}
-            <div className="border-t border-gray-100 pt-2 flex justify-between text-gray-600">
+            <div className="border-t border-gray-100 dark:border-white/10 pt-2 flex justify-between text-gray-600 dark:text-white/60">
               <span>Delivery</span>
               <span>{deliveryFee === 0 ? "FREE" : `₹${deliveryFee}`}</span>
             </div>

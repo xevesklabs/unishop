@@ -11,6 +11,18 @@ export default function Navbar({ showBack = false, title = "" }) {
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
 
+  const handleSearchClick = () => {
+    if (window.location.pathname === '/') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      const searchInput = document.getElementById('hero-search');
+      if (searchInput) {
+        setTimeout(() => searchInput.focus(), 500);
+      }
+    } else {
+      setMobileOpen(true);
+    }
+  };
+
   return (
     <header className="sticky top-0 z-40 border-b backdrop-blur-md bg-white/90 border-gray-200 text-gray-800 dark:bg-[#0e0e0e]/90 dark:border-white/10 dark:text-white transition-colors">
       <nav className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
@@ -34,10 +46,10 @@ export default function Navbar({ showBack = false, title = "" }) {
                 className="w-8 h-8 rounded-lg flex items-center justify-center text-white text-xs font-black"
                 style={{ backgroundColor: "var(--accent)" }}
               >
-                U
+                M
               </div>
               <span className="font-bold text-base tracking-tight">
-                UniShop
+                Mayank Uniforms
               </span>
             </Link>
           )}
@@ -75,7 +87,10 @@ export default function Navbar({ showBack = false, title = "" }) {
           </button>
 
           {/* Search — desktop */}
-          <button className="hidden md:flex p-2 rounded-full hover:bg-gray-100 dark:hover:bg-white/10 opacity-60 hover:opacity-100 transition-all">
+          <button 
+            onClick={handleSearchClick}
+            className="hidden md:flex p-2 rounded-full hover:bg-gray-100 dark:hover:bg-white/10 opacity-60 hover:opacity-100 transition-all"
+          >
             <Search size={18} />
           </button>
 

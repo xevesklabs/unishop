@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet-async';
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Star, ChevronDown, ChevronUp, ShoppingCart, Shield } from "lucide-react";
@@ -42,6 +43,7 @@ export default function ProductPage() {
   if (!product) {
     return (
       <div className="min-h-screen flex items-center justify-center text-gray-400">
+      <Helmet><title>{product.name} | {school.shortName} — Mayank Uniforms</title></Helmet>
         Product not found.
       </div>
     );
@@ -64,10 +66,11 @@ export default function ProductPage() {
       <Navbar showBack title={school?.shortName} />
 
       {/* Image hero */}
-      <div className="w-full h-56 relative bg-white dark:bg-[#1a1a1a] border-b border-gray-100 dark:border-white/5">
+      <div className="w-full h-56 relative bg-gray-100 dark:bg-white/5 border-b border-gray-100 dark:border-white/5">
         <img
           src={product.images[0]}
           alt={product.name}
+          loading="lazy"
           className="w-full h-full object-contain"
         />
         <div className="absolute bottom-3 right-3">

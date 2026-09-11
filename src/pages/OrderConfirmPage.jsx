@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Package, Home } from "lucide-react";
+import { MessageCircle, Home } from "lucide-react";
 import Navbar from "../components/layout/Navbar";
 
 function generateOrderId() {
@@ -21,7 +21,7 @@ export default function OrderConfirmPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#0e0e0e] flex flex-col transition-colors">
+    <div className="min-h-screen bg-gray-50 dark:bg-[#0e0e0e] flex flex-col transition-colors">
       <Navbar title="Order Placed" />
 
       <div className="max-w-sm mx-auto px-5 py-12 text-center page-enter">
@@ -35,23 +35,23 @@ export default function OrderConfirmPage() {
         </div>
 
         <h1 className="text-2xl font-extrabold text-gray-900">Order Confirmed!</h1>
-        <p className="text-sm text-gray-500 mt-2">
+        <p className="text-sm text-gray-500 dark:text-white/40 mt-2">
           Thank you! Your uniforms are on their way. A confirmation email has been sent to you.
         </p>
 
         {/* Order ID card */}
-        <div className="mt-6 bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+        <div className="mt-6 bg-white dark:bg-[#1a1a1a] rounded-2xl border border-gray-100 dark:border-white/10 shadow-sm p-5">
           <p className="text-xs text-gray-400 uppercase tracking-widest mb-1">Order ID</p>
           <p className="text-lg font-black tracking-wide" style={{ color: "var(--accent)" }}>
             {orderId}
           </p>
-          <p className="text-xs text-gray-500 mt-2">
+          <p className="text-xs text-gray-500 dark:text-white/40 mt-2">
             Save this ID for tracking and returns
           </p>
         </div>
 
         {/* Timeline */}
-        <div className="mt-6 bg-white rounded-2xl border border-gray-100 shadow-sm p-4 text-left">
+        <div className="mt-6 bg-white dark:bg-[#1a1a1a] rounded-2xl border border-gray-100 dark:border-white/10 shadow-sm p-4 text-left">
           <p className="text-xs font-bold text-gray-700 mb-3">What happens next?</p>
           {[
             { step: "Order Received",    time: "Now",          done: true },
@@ -87,18 +87,18 @@ export default function OrderConfirmPage() {
             Continue Shopping
           </button>
           <button
-            onClick={() => navigate("/")}
-            className="w-full py-2.5 rounded-xl text-sm font-medium text-gray-600 border border-gray-200 hover:bg-gray-50 flex items-center justify-center gap-2"
+            onClick={() => window.open('https://wa.me/919466210650?text=Hi%2C%20I%20want%20to%20track%20my%20order', '_blank')}
+            className="w-full py-2.5 rounded-xl text-sm font-medium text-gray-600 dark:text-white/60 border border-gray-200 dark:border-white/10 hover:bg-gray-50 dark:hover:bg-white/5 flex items-center justify-center gap-2 transition-colors"
           >
-            <Package size={15} />
-            Track My Order
+            <MessageCircle size={15} />
+            Track via WhatsApp
           </button>
         </div>
 
         <p className="mt-6 text-xs text-gray-400">
           Need help? WhatsApp us at{" "}
-          <a href="https://wa.me/919876543210" className="underline font-medium" style={{ color: "var(--accent)" }}>
-            +91 98765 43210
+          <a href="https://wa.me/919466210650" className="underline font-medium" style={{ color: "var(--accent)" }}>
+            +91 94662 10650
           </a>
         </p>
       </div>

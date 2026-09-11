@@ -13,6 +13,7 @@ import AllProductsPage from "./pages/AllProductsPage";
 import LoginPage from "./pages/LoginPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import OrderConfirmPage from "./pages/OrderConfirmPage";
+import NotFoundPage from "./pages/NotFoundPage";
 import useThemeStore from "./store/themeStore";
 
 export default function App() {
@@ -41,17 +42,7 @@ export default function App() {
         <Route path="/checkout"       element={<CheckoutPage />} />
         <Route path="/order-confirm"  element={<OrderConfirmPage />} />
         {/* Catch-all */}
-        <Route path="*" element={
-          <div className="min-h-screen flex items-center justify-center text-gray-400 dark:bg-[#0e0e0e]">
-            <div className="text-center">
-              <p className="text-4xl mb-3">🔍</p>
-              <p className="font-bold text-gray-700 dark:text-white">Page not found</p>
-              <a href="/" className="text-sm underline mt-2 block" style={{ color: "var(--accent)" }}>
-                Go home
-              </a>
-            </div>
-          </div>
-        } />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
   );

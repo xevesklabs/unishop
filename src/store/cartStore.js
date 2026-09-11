@@ -30,6 +30,7 @@ const useCartStore = create(
                 productId: product.id,
                 schoolId: product.schoolId,
                 name: product.name,
+                image: product.images[0],
                 size,
                 price: product.price,
                 quantity,

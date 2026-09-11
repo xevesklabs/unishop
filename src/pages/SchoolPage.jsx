@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet-async';
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Navbar from "../components/layout/Navbar";
@@ -31,6 +32,7 @@ export default function SchoolPage() {
   if (!school) {
     return (
       <div className="min-h-screen flex items-center justify-center text-gray-400">
+      <Helmet><title>{school.name} Uniforms — Mayank Uniforms</title></Helmet>
         <p>School not found.</p>
       </div>
     );

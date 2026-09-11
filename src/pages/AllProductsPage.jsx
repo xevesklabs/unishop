@@ -1,11 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import Navbar from "../components/layout/Navbar";
 import ProductCard from "../components/product/ProductCard";
 import { products, schools } from "../data/mockData";
 
 export default function AllProductsPage() {
-  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [searchParams] = useSearchParams();
+  const categoryParam = searchParams.get("category");
+  
+  const [selectedCategory, setSelectedCategory] = useState(categoryParam || "all");
   const [selectedSchool, setSelectedSchool] = useState("all");
+
+  useEffect(() => {
+    if (categoryParam) {
+      setSelectedCategory(categoryParam);
+    }
+  }, [categoryParam]);
 
   const categories = ["all", "boys", "girls", "winter", "summer", "sportswear", "accessories"];
 

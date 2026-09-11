@@ -1,8 +1,10 @@
+import { Helmet } from 'react-helmet-async';
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Search, ArrowRight, Star } from "lucide-react";
 import Navbar from "../components/layout/Navbar";
 import { schools, products } from "../data/mockData";
+import ProductCard from "../components/product/ProductCard";
 
 // ── Category data ──────────────────────────────────────────────────────────
 const shopCategories = [
@@ -24,54 +26,6 @@ const stats = [
   { value: "2–4", label: "Days Delivery" },
   { value: "100%", label: "School Approved" },
 ];
-
-// ── Product card (Theme-aware version) ───────────────────────────────────────────
-function ThemeProductCard({ product }) {
-  const navigate = useNavigate();
-  const school = schools.find((s) => s.id === product.schoolId);
-  const totalStock = Object.values(product.stock).reduce((a, b) => a + b, 0);
-
-  return (
-    <div
-      onClick={() => navigate(`/product/${product.id}`)}
-      className="group flex-shrink-0 w-44 md:w-52 cursor-pointer"
-    >
-      {/* Image area */}
-      <div className="relative w-full aspect-square rounded-2xl mb-3 flex items-center justify-center overflow-hidden border border-gray-100 dark:border-white/5 bg-white dark:bg-[#1e1e1e]">
-        <img
-          src={product.images[0]}
-          alt={product.name}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-        />
-        {/* Accent color dot */}
-        <div
-          className="absolute top-2.5 left-2.5 w-2 h-2 rounded-full shadow-sm"
-          style={{ backgroundColor: school?.accent || "var(--accent)" }}
-        />
-        {totalStock === 0 && (
-          <div className="absolute inset-0 bg-white/70 dark:bg-black/50 flex items-center justify-center">
-            <span className="text-xs text-gray-800 dark:text-white/60 font-medium">Sold Out</span>
-          </div>
-        )}
-      </div>
-
-      {/* Info */}
-      <p className="text-xs text-gray-400 dark:text-white/40 mb-0.5 truncate">{school?.shortName}</p>
-      <h3 className="text-sm font-semibold text-gray-800 dark:text-white/90 leading-snug line-clamp-2 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
-        {product.name}
-      </h3>
-      <div className="flex items-center justify-between mt-2">
-        <span className="text-sm font-bold" style={{ color: "var(--accent)" }}>
-          ₹{product.price.toLocaleString("en-IN")}
-        </span>
-        <div className="flex items-center gap-0.5">
-          <Star size={10} fill="#f59e0b" className="text-amber-400" />
-          <span className="text-[10px] text-gray-500 dark:text-white/40">{product.rating}</span>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 // ── School card (Theme-aware version) ────────────────────────────────────────────
 function ThemeSchoolCard({ school }) {
@@ -120,6 +74,7 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-[#0e0e0e] transition-colors">
+      <Helmet><title>Mayank Uniforms — School Uniforms in Jagadhri & Yamunanagar</title><meta name="description" content="Mayank Uniforms is Jagadhri's trusted school uniform shop. Buy official uniforms for your school online — delivered across Jagadhri & Yamunanagar." /></Helmet>
       <Navbar />
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
@@ -131,7 +86,7 @@ export default function HomePage() {
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-gray-200 dark:border-white/10 bg-white/50 dark:bg-white/5 text-xs font-medium text-gray-600 dark:text-white/60 mb-6 backdrop-blur-sm">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-pulse" />
-            Official Uniform Partner · New Delhi
+            Official Uniform Partner · Jagadhri
           </div>
 
           <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 dark:text-white leading-[1.08] tracking-tight mb-5">
@@ -154,6 +109,7 @@ export default function HomePage() {
             <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-white/30" />
             <input
               type="text"
+              id="hero-search"
               placeholder="Search your school…"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
@@ -197,7 +153,7 @@ export default function HomePage() {
             {shopCategories.map((cat) => (
               <button
                 key={cat.id}
-                onClick={() => navigate(`/school/st-marys`)}
+                onClick={() => navigate(`/products?category=${cat.id}`)}
                 className="glass-card rounded-2xl p-4 text-left group hover:border-gray-300 dark:hover:border-white/15 hover:-translate-y-0.5 transition-all duration-200 shadow-sm dark:shadow-none"
               >
                 <span className="text-3xl mb-3 block">{cat.emoji}</span>
@@ -230,11 +186,11 @@ export default function HomePage() {
             </button>
           </div>
 
-          <div className="scroll-row flex gap-4 pb-2">
+          <div className="scroll-row-wrapper"><div className="scroll-row flex gap-4 pb-2">
             {schools.map((school) => (
               <ThemeSchoolCard key={school.id} school={school} />
             ))}
-          </div>
+          </div></div>
         </div>
       </section>
 
@@ -256,38 +212,11 @@ export default function HomePage() {
           </button>
         </div>
 
-        <div className="scroll-row flex gap-4 pb-2">
+        <div className="scroll-row-wrapper"><div className="scroll-row flex gap-4 pb-2">
           {newArrivals.map((p) => (
-            <ThemeProductCard key={p.id} product={p} />
+            <ProductCard key={p.id} product={p} />
           ))}
-        </div>
-      </section>
-
-      {/* ── FEATURED PRODUCTS ────────────────────────────────────────────────── */}
-      <section className="border-t border-gray-200 dark:border-white/6 py-14 px-4 bg-white/30 dark:bg-transparent">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex items-end justify-between mb-7">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-white/30 mb-1">
-                Top Picks
-              </p>
-              <h2 className="text-2xl font-extrabold text-gray-900 dark:text-white">Featured Products</h2>
-            </div>
-            <button
-              onClick={() => navigate('/featured')}
-              className="text-xs font-semibold flex items-center gap-1 opacity-70 hover:opacity-100 transition-opacity"
-              style={{ color: "var(--accent)" }}
-            >
-              View all <ArrowRight size={13} />
-            </button>
-          </div>
-
-          <div className="scroll-row flex gap-4 pb-2">
-            {products.slice(8, 16).map((p) => (
-              <ThemeProductCard key={p.id} product={p} />
-            ))}
-          </div>
-        </div>
+        </div></div>
       </section>
 
       {/* ── STATS BAR ────────────────────────────────────────────────────── */}
@@ -307,7 +236,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── FOOTER ───────────────────────────────────────────────────────── */}
+{/* ── FOOTER ───────────────────────────────────────────────────────── */}
       <footer className="border-t border-gray-200 dark:border-white/6 bg-white dark:bg-[#090909]">
         <div className="max-w-7xl mx-auto px-4 py-12">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
@@ -318,12 +247,12 @@ export default function HomePage() {
                   className="w-8 h-8 rounded-lg flex items-center justify-center text-white text-xs font-black"
                   style={{ backgroundColor: "var(--accent)" }}
                 >
-                  U
+                  M
                 </div>
-                <span className="font-bold text-gray-900 dark:text-white">UniShop</span>
+                <span className="font-bold text-gray-900 dark:text-white">Mayank Uniforms</span>
               </div>
               <p className="text-xs text-gray-600 dark:text-white/40 leading-relaxed mb-4">
-                Official school uniform partner for 4+ schools across New Delhi. Quality uniforms, fast delivery.
+                School uniforms for Jagadhri & Yamunanagar. Quality uniforms, fast delivery.
               </p>
             </div>
 
@@ -331,23 +260,23 @@ export default function HomePage() {
             <div>
               <h4 className="text-xs font-bold uppercase tracking-widest text-gray-500 dark:text-white/40 mb-4">Quick Links</h4>
               <ul className="space-y-2.5">
-                {["Home", "Schools", "Products", "About Us", "Our Policies"].map((l) => (
-                  <li key={l}>
-                    <a href="#" className="text-sm text-gray-600 dark:text-white/50 hover:text-gray-900 dark:hover:text-white transition-colors">{l}</a>
-                  </li>
-                ))}
+                <li><Link to="/" className="text-sm text-gray-600 dark:text-white/50 hover:text-gray-900 dark:hover:text-white transition-colors">Home</Link></li>
+                <li><Link to="/schools" className="text-sm text-gray-600 dark:text-white/50 hover:text-gray-900 dark:hover:text-white transition-colors">Schools</Link></li>
+                <li><Link to="/products" className="text-sm text-gray-600 dark:text-white/50 hover:text-gray-900 dark:hover:text-white transition-colors">Products</Link></li>
+                <li><Link to="/about" className="text-sm text-gray-600 dark:text-white/50 hover:text-gray-900 dark:hover:text-white transition-colors">About Us</Link></li>
+                <li><Link to="/about" className="text-sm text-gray-600 dark:text-white/50 hover:text-gray-900 dark:hover:text-white transition-colors">Our Policies</Link></li>
               </ul>
             </div>
 
-            {/* Policies */}
+            {/* Social */}
             <div>
-              <h4 className="text-xs font-bold uppercase tracking-widest text-gray-500 dark:text-white/40 mb-4">Policies</h4>
-              <ul className="space-y-2.5">
-                {["Shipping & Delivery", "Returns & Refunds", "Terms & Conditions", "Privacy Policy"].map((l) => (
-                  <li key={l}>
-                    <a href="#" className="text-sm text-gray-600 dark:text-white/50 hover:text-gray-900 dark:hover:text-white transition-colors">{l}</a>
-                  </li>
-                ))}
+              <h4 className="text-xs font-bold uppercase tracking-widest text-gray-500 dark:text-white/40 mb-4">Social</h4>
+              <ul className="space-y-2.5 mb-6">
+                <li>
+                  <a href="https://instagram.com/mayank.uniforms" target="_blank" rel="noreferrer" className="flex items-center gap-2 text-sm text-gray-600 dark:text-white/50 hover:text-gray-900 dark:hover:text-white transition-colors">
+                    <span>📸</span> @mayank.uniforms
+                  </a>
+                </li>
               </ul>
             </div>
 
@@ -357,22 +286,27 @@ export default function HomePage() {
               <ul className="space-y-3">
                 <li className="flex items-start gap-2 text-sm text-gray-600 dark:text-white/50">
                   <span className="mt-0.5">📍</span>
-                  <span>Sector 12 Market, New Delhi — 110001</span>
+                  <span>Civil Lines, Jagadhri — Opp. Smart Point & PNB</span>
                 </li>
                 <li>
                   <a
-                    href="https://wa.me/919876543210"
+                    href="https://wa.me/919466210650"
+                    target="_blank"
+                    rel="noreferrer"
                     className="flex items-center gap-2 text-sm text-gray-600 dark:text-white/50 hover:text-gray-900 dark:hover:text-white transition-colors"
                   >
-                    <span>💬</span> +91 98765 43210
+                    <span>💬</span> +91 94662 10650
                   </a>
                 </li>
+                <li className="flex items-center gap-2 text-sm text-gray-600 dark:text-white/50">
+                  <span>📞</span> +91 80590 68794
+                </li>
                 <li>
                   <a
-                    href="mailto:hello@unishop.in"
+                    href="mailto:uniformmayank@gmail.com"
                     className="flex items-center gap-2 text-sm text-gray-600 dark:text-white/50 hover:text-gray-900 dark:hover:text-white transition-colors"
                   >
-                    <span>✉️</span> hello@unishop.in
+                    <span>✉️</span> uniformmayank@gmail.com
                   </a>
                 </li>
               </ul>
@@ -381,8 +315,8 @@ export default function HomePage() {
 
           {/* Bottom bar */}
           <div className="pt-6 border-t border-gray-200 dark:border-white/5 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-gray-500 dark:text-white/25">
-            <p>© 2026 UniShop. All rights reserved.</p>
-            <p>Serving Delhi NCR · Payments secured by Razorpay</p>
+            <p>© 2025 Mayank Uniforms. All rights reserved.</p>
+            <p>Serving Jagadhri & Yamunanagar</p>
           </div>
         </div>
       </footer>
