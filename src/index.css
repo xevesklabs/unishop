@@ -27,9 +27,9 @@
 }
 
 .dark {
-  --text-primary: #FFFFFF;
-  --text-secondary: #E2E8F0;
-  --text-muted: #94A3B8;
+  --text-primary: #F5F7FA;
+  --text-secondary: #A7AFBC;
+  --text-muted: #6B7280;
   
   --border: rgba(255, 255, 255, 0.1);
 }
